@@ -15,13 +15,6 @@ import requests
 import hmac
 import urllib
 from config import *
-api_bitbay_pub = "cdbae0bc7781fb10e661cb21ef0f4281"
-api_bitbay = "https://bitbay.net/API/Trading/tradingApi.php"
-api_bitbay_etc_call = "https://bitbay.net/API/Public/ethpln/ticker.json"
-api_bitbay_btc_call = "https://bitbay.net/API/Public/btcpln/ticker.json"
-api_nanopool_call = "https://api.nanopool.org/v1/eth/user/0x9b51e5ec94efdfa9bad7486ef8274337ab0b8eae"
-api_weather_call = "http://wttr.in/Warsaw_T1qp_lang=en.png"
-api_triggered_call = "https://i.redd.it/pz8bgk80i97x.jpg"
  
 class EchoBot(fbchat.Client):
  
