@@ -100,4 +100,8 @@ ENV/
 # mypy
 .mypy_cache/
 
+# IDE files
+.idea/
+
+# Config files of the bot
 config.py
