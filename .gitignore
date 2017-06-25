@@ -105,3 +105,4 @@ ENV/
 
 # Config files of the bot
 config.py
+/.project

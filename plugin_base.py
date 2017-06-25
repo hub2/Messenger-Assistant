@@ -22,15 +22,33 @@ class AbstractPluginBase:
 
 
 class PluginLoader:
+    are_plugins_loaded = False
+    cached_plugins = []
+    modules = []
     @staticmethod
-    def get_all_plugins():
-        plugins_classes = []
-        # Load all modules
-        for module in [importlib.import_module("plugins." + x) for x in plugins.__all__]:
-            # Get only subclasses of AbstractPluginBase
-            plugins_classes += inspect.getmembers(module, PluginLoader.is_plugin)
-        # Return instances of the classes
-        return [(x[0], x[1]()) for x in plugins_classes]
+    def get_all_plugins(force=False):
+        if not PluginLoader.are_plugins_loaded or force:
+            importlib.reload(plugins)
+            plugins_classes = []
+            PluginLoader.modules = [importlib.import_module("plugins." + x) for x in plugins.__all__]
+
+            # Load all modules
+            for module in PluginLoader.modules:
+                # Reload all modules(this is needed for reload_plugins to work properly)
+                importlib.reload(module)
+                # Get only subclasses of AbstractPluginBase
+                plugins_classes += inspect.getmembers(module, PluginLoader.is_plugin)
+                del module
+            # Return instances of the classes
+            PluginLoader.cached_plugins = [(x[0], x[1]()) for x in plugins_classes]
+            PluginLoader.are_plugins_loaded = True
+
+        return PluginLoader.cached_plugins
+
+    @staticmethod
+    def reload_plugins():
+        print("Reloading plugins")
+        PluginLoader.get_all_plugins(force=True)
 
     @staticmethod
     def is_plugin(object):
